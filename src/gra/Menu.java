@@ -1,6 +1,7 @@
 package gra;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -9,16 +10,22 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Menu {
 
 	private JFrame frame;
+	private int rozmiarPlanszy = 3;
 
 	/**
 	 * Launch the application.
@@ -59,8 +66,16 @@ public class Menu {
 		panel.setLayout(new GridLayout(4, 0, 1, 0));
 		
 		JLabel lblRozmiarPlanszy = new JLabel("Rozmiar planszy");
+		lblRozmiarPlanszy.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblRozmiarPlanszy.setVerticalAlignment(SwingConstants.TOP);
 		lblRozmiarPlanszy.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblRozmiarPlanszy);
+		
+		JRadioButton rbtn1 = new JRadioButton("3x3");
+		rbtn1.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(rbtn1);
+		btn1Group.add(rbtn1);
+		rbtn1.setSelected(true);
 		
 		JRadioButton rbtn2 = new JRadioButton("4x4");
 		rbtn2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -72,39 +87,13 @@ public class Menu {
 		panel.add(rbtn3);
 		btn1Group.add(rbtn3);
 		
-		JRadioButton rbtn1 = new JRadioButton("3x3");
-		rbtn1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(rbtn1);
-		
-		btn1Group.add(rbtn1);
-		
-		JPanel panel_1 = new JPanel();
-		frame.getContentPane().add(panel_1);
-		
-		ButtonGroup btn2Group = new ButtonGroup();
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JLabel lblNewLabel = new JLabel("Tryb gry");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(lblNewLabel);
-		
-		JRadioButton rbtn4 = new JRadioButton("1 vs. 1");
-		rbtn4.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(rbtn4);
-		btn2Group.add(rbtn4);
-		
-		JRadioButton rbtn5 = new JRadioButton("komputer");
-		rbtn5.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(rbtn5);
-		btn2Group.add(rbtn5);
-		
-		JLabel label = new JLabel("");
-		panel_1.add(label);
 		JPanel panel_2 = new JPanel();
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel lblNewLabel_1 = new JLabel("Gra na czas");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 28));
+		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(lblNewLabel_1);
 		
@@ -112,8 +101,40 @@ public class Menu {
 		chckbxNewCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(chckbxNewCheckBox);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.addItem("5sek");
+		comboBox.addItem("10sek");
+		comboBox.addItem("15sek");
 		panel_2.add(comboBox);
+		
+		JButton btnNewButton = new JButton("Start");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+				int czas = 10;
+				boolean ograniczCzasGry = chckbxNewCheckBox.isSelected();
+				
+				if (rbtn1.isSelected())
+					rozmiarPlanszy = 3;
+				else if (rbtn2.isSelected())
+					rozmiarPlanszy = 4;
+				else if(rbtn3.isSelected())
+					rozmiarPlanszy = 5;
+				
+				if (comboBox.getSelectedItem() == ("5sek"))
+					czas = 5;
+				else if (comboBox.getSelectedItem() == ("10sek"))
+					czas = 10;
+				else if(comboBox.getSelectedItem() == ("15sek"))
+					czas = 15;
+				
+				Plansza window = new Plansza(rozmiarPlanszy, czas, ograniczCzasGry);
+				window.frame.setVisible(true);
+			}
+		});
+		
+		
+		panel_2.add(btnNewButton);
 	}
 
 }
